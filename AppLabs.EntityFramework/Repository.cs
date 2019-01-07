@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AppLabs.EntityFramework.Interfaces;
+using AppLabs.EntityFramework.Paged;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppLabs.EntityFramework
@@ -81,6 +82,8 @@ namespace AppLabs.EntityFramework
         {
             return _dbset.ToList();
         }
+
+
         public virtual IEnumerable<T> GetMany(Expression<Func<T, bool>> where)
         {
             return _dbset.Where(where).ToList();
@@ -94,6 +97,11 @@ namespace AppLabs.EntityFramework
         public virtual async Task<IEnumerable<T>> GetManyAsync(Expression<Func<T, bool>> @where)
         {
             return await _dbset.Where(where).ToListAsync();
+        }
+
+        public PagedResult<T> GetPage(int page, int pageSize)
+        {
+            return _dbset.GetPaged(page, pageSize);
         }
 
         public T Get(Expression<Func<T, bool>> where)

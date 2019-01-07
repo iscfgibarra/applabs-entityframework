@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using AppLabs.EntityFramework.Paged;
 
 namespace AppLabs.EntityFramework.Interfaces
 {
@@ -37,5 +38,7 @@ namespace AppLabs.EntityFramework.Interfaces
         Task<IEnumerable<T>> GetAllAsync();
         
         Task<IEnumerable<T>> GetManyAsync(Expression<Func<T, bool>> where);
+
+        PagedResult<T> GetPage(int page, int numberOfRows);
     }
 }

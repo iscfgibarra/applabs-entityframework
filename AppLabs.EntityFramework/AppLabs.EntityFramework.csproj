@@ -6,10 +6,11 @@
     <Company>AppLabs</Company>
     <Description>Clases básicas para iniciar un DbContext de Entity Framework Net. Core con los patrones 
 Factoria (Factory), Repositorio (Repository) y Unidad de Trabajo (Unit of Work) por defecto.</Description>
-    <Copyright>2018 ©AppLabs</Copyright>
+    <Copyright>2019 ©AppLabs</Copyright>
     <Authors>Francisco Ibarra</Authors>
     <PackageTags>Entity Framework, Factory, Repository, Unit of Work</PackageTags>
     <PackageProjectUrl>https://github.com/iscfgibarra/applabs-entityframework</PackageProjectUrl>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
