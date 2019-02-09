@@ -4,5 +4,7 @@
     {
         string ConnectionString { get; set; }
         bool DatabaseOnMemory { get; set; }
+
+        bool UseSqlite { get; set; }
     }
 }

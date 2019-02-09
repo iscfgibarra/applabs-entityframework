@@ -18,7 +18,7 @@ namespace AppLabs.EntityFramework.Test
             //La cadena de conexion no aplica puesto que
             //estamos usando una base de datos en memoria.
             _factory = new DatabaseFactory<BitacoraContext>
-                (new DataAccessConfiguration("CONNECTION_STRING", true));
+                (new DataAccessConfiguration("Data Source=E:\\bitacora.db", false, true));
             _uow = new UnitOfWork(_factory);
             InitProyectos();
             InitEtiquetas();
@@ -101,9 +101,18 @@ namespace AppLabs.EntityFramework.Test
         {
             var proyectosRepo = _uow.GetRepository<Proyecto>();
 
+            var ultimoProyecto = proyectosRepo.GetAll().OrderByDescending(p => p.ProyectoId).FirstOrDefault();
+            int sigId = 1;
+
+            if (ultimoProyecto != null)
+            {
+                sigId = ultimoProyecto.ProyectoId + 1;
+            }
+
+
             var result = await proyectosRepo.AddAsync(new Proyecto
             {
-                ProyectoId = 3,
+                ProyectoId = sigId,
                 Nombre = "Pagina web",
                 Descripcion = "Crear una pagina web"
             });

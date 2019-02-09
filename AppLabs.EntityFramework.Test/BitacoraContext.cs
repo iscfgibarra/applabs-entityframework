@@ -10,6 +10,7 @@ namespace AppLabs.EntityFramework.Test
     {
         private string _connectionString;
         private bool _databaseOnMemory;
+        private bool _useSqlite;
 
         public BitacoraContext()
         {
@@ -25,6 +26,7 @@ namespace AppLabs.EntityFramework.Test
         {
             _connectionString = configuration.ConnectionString;
             _databaseOnMemory = configuration.DatabaseOnMemory;
+            _useSqlite = configuration.UseSqlite;
         }
 
 
@@ -35,14 +37,15 @@ namespace AppLabs.EntityFramework.Test
             {
                 optionsBuilder.UseInMemoryDatabase("DbInMemory");
             }
-            else
+            else if (_useSqlite)
             {
-                if (!optionsBuilder.IsConfigured)
-                {
+                optionsBuilder.UseSqlite(_connectionString);
+            }
+            else if (!optionsBuilder.IsConfigured)
+            {
 
-                    optionsBuilder.UseSqlServer(
-                        _connectionString, options => options.EnableRetryOnFailure());
-                }
+                optionsBuilder.UseSqlServer(
+                    _connectionString, options => options.EnableRetryOnFailure());
             }
         }
 
