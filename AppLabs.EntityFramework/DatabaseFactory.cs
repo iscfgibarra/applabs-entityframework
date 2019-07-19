@@ -19,7 +19,7 @@ namespace AppLabs.EntityFramework
             if (_dataContext != null) return _dataContext;
             
             _dataContext = new TContext();
-            _dataContext.SetConfiguration(_dataAccessConfiguration);
+            _dataContext.DataAccessConfiguration = _dataAccessConfiguration;
 
             return _dataContext;
         }

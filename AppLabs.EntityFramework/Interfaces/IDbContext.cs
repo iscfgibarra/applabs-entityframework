@@ -7,8 +7,8 @@ namespace AppLabs.EntityFramework.Interfaces
     {
         DbSet<T> Set<T>() where T : class;
         EntityEntry<T> Entry<T>(T entity) where T : class;
+        IDataAccessConfiguration DataAccessConfiguration { get; set; }
         int SaveChanges();
         void Dispose();
-        void SetConfiguration(IDataAccessConfiguration configuration);
     }
 }

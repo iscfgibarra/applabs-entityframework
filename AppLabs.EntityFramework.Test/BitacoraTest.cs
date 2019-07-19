@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
-using AppLabs.EntityFramework.Test.Entities;
+using AppLabs.EntityFramework.Data;
+using AppLabs.EntityFramework.Data.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AppLabs.EntityFramework.Test
@@ -18,7 +19,7 @@ namespace AppLabs.EntityFramework.Test
             //La cadena de conexion no aplica puesto que
             //estamos usando una base de datos en memoria.
             _factory = new DatabaseFactory<BitacoraContext>
-                (new DataAccessConfiguration("Data Source=E:\\bitacora.db", false, true));
+                (new DataAccessConfiguration("Data Source=E:\\bitacora.db", true));
             _uow = new UnitOfWork(_factory);
             InitProyectos();
             InitEtiquetas();

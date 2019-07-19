@@ -16,3 +16,157 @@ La base de datos utilizada en el test, se encuentra en la carpeta DatabaseSqlite
 Verifica el proyecto de ejemplo para ver la configuración y uso.
 
 Para mayor referencia verificar la [documentación de microsoft para Sqlite para EF.](https://docs.microsoft.com/en-us/ef/core/get-started/netcore/new-db-sqlite)
+
+## Inicio Rápido
+
+Primero es necesario heredar la interfaz IDbContext tu contexto de datos e implementar la propiedad DataAccessConfiguration. 
+
+
+```csharp
+	public class BitacoraContext : DbContext, IDbContext
+    {
+        public IDataAccessConfiguration DataAccessConfiguration { get; set; }
+		
+    ...
+```csharp
+        
+Despues hay que sobrescribir el método OnConfiguring, esto es totalmente necesario para poder usar la Factory.
+
+```csharp
+		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+
+            if (!optionsBuilder.IsConfigured)
+            {
+                if (DataAccessConfiguration.UseOnMemory)
+                {
+                    optionsBuilder.UseInMemoryDatabase("DbInMemory");
+                }
+                else if (DataAccessConfiguration.UseSqlite)
+                {
+                    optionsBuilder.UseSqlite(DataAccessConfiguration.ConnectionString);
+                }
+                else if(DataAccessConfiguration.UseSqlServer)
+                {
+                    optionsBuilder.UseSqlServer(
+                        DataAccessConfiguration.ConnectionString, options => options.EnableRetryOnFailure());
+                } else
+                {
+                    optionsBuilder.UseSqlServer(
+                        DataAccessConfiguration.ConnectionString, options => options.EnableRetryOnFailure());
+                }
+            }
+        }
+```csharp
+        
+Puedes omitir propiedades o incluso usar solo la cadena de conexión.
+
+```csharp
+		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+
+            if (!optionsBuilder.IsConfigured)
+            {
+               optionsBuilder.UseSqlServer(DataAccessConfiguration.ConnectionString, options => options.EnableRetryOnFailure());
+                
+            }
+        }
+```csharp
+        
+
+El siguiente paso es añadir la configuracion (IDataAccessConfiguration).
+
+### Configuracion Directa
+		
+En el proyecto AppLabs.EntityFramework.Test se demuestra el uso directo.
+La IDataAccessConfiguration expone 4 propiedades para ayudar a la factoria a generar el DbContext de manera adecuada por medio del DatabaseFactory.
+
+```csharp
+		public string ConnectionString { get; set; }
+        public bool UseOnMemory { get; set; }
+        public bool UseSqlite { get; set; }
+        public bool UseSqlServer { get; set; }
+```
+
+Ejemplo usando Sqlite
+
+```csharp
+		[TestInitialize]
+        public void Initialize()
+        {            
+            _factory = new DatabaseFactory<BitacoraContext>
+                (new DataAccessConfiguration("Data Source=E:\\bitacora.db", true));
+            _uow = new UnitOfWork(_factory);
+            InitProyectos();
+            InitEtiquetas();
+        }
+		
+```
+
+Ejemplo usando SqlServer (el constructor de DataAccessConfiguration establece por dafault SqlServer)
+
+```csharp
+		[TestInitialize]
+        public void Initialize()
+        {            
+            _factory = new DatabaseFactory<BitacoraContext>
+                (new DataAccessConfiguration("Server=myServerAddress;Database=myDataBase;Trusted_Connection=True;"));
+            _uow = new UnitOfWork(_factory);
+            InitProyectos();
+            InitEtiquetas();
+        }
+		
+```
+
+
+### Configuracion Web
+
+En el proyecto AppLabs.EntityFramework.Web.Demo se muestra como 
+Para poder usar adecuadamente en un proyecto de .NET CORE 2.2+ primero seria necesario agregar la sección correspondiente en el appsettings.json
+
+```json
+
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "DataAccessConfiguration": {
+    "ConnectionString": "Data Source=E:\\bitacora.db",
+    "UseOnMemory": false,
+    "UseSqlite": true,
+    "UseSqlServer": false
+  }
+}
+
+
+```
+
+Y despues inyectar las dependiencias en startup.cs
+
+```csharp
+
+			services.AddSingleton<IDataAccessConfiguration>(dc =>
+              new DataAccessConfiguration($"{Configuration["DataAccessConfiguration:ConnectionString"]}",
+                  bool.Parse(Configuration["DataAccessConfiguration:UseSqlite"])));
+            
+            services.AddScoped<IDatabaseFactory, DatabaseFactory<BitacoraContext>>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IRepository<Proyecto>, Repository<Proyecto>>();
+            services.AddTransient<IRepository<Etiqueta>, Repository<Etiqueta>>();
+            services.AddTransient<IRepository<Entrada>, Repository<Entrada>>();
+
+```
+
+
+
+
+
+
+
+
+

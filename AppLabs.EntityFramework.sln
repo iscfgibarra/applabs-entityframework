@@ -5,7 +5,11 @@ VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppLabs.EntityFramework", "AppLabs.EntityFramework\AppLabs.EntityFramework.csproj", "{B4461456-AB52-4862-AA79-CE1D3D2CA6A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppLabs.EntityFramework.Test", "AppLabs.EntityFramework.Test\AppLabs.EntityFramework.Test.csproj", "{5B4A9ABF-8A97-47DA-A01F-BB0133199BB2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppLabs.EntityFramework.Test", "AppLabs.EntityFramework.Test\AppLabs.EntityFramework.Test.csproj", "{5B4A9ABF-8A97-47DA-A01F-BB0133199BB2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppLabs.EntityFramework.Web.Demo", "AppLabs.EntityFramework.Web.Demo\AppLabs.EntityFramework.Web.Demo.csproj", "{1B76BE7E-0715-4CD9-8585-54D27954709D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppLabs.EntityFramework.Data", "AppLabs.EntityFramework.Data\AppLabs.EntityFramework.Data.csproj", "{97DD4C0D-CC50-449A-9C0E-0516FB065050}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{5B4A9ABF-8A97-47DA-A01F-BB0133199BB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B4A9ABF-8A97-47DA-A01F-BB0133199BB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B4A9ABF-8A97-47DA-A01F-BB0133199BB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B76BE7E-0715-4CD9-8585-54D27954709D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B76BE7E-0715-4CD9-8585-54D27954709D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B76BE7E-0715-4CD9-8585-54D27954709D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B76BE7E-0715-4CD9-8585-54D27954709D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97DD4C0D-CC50-449A-9C0E-0516FB065050}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97DD4C0D-CC50-449A-9C0E-0516FB065050}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97DD4C0D-CC50-449A-9C0E-0516FB065050}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97DD4C0D-CC50-449A-9C0E-0516FB065050}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

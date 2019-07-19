@@ -3,8 +3,8 @@
     public interface IDataAccessConfiguration
     {
         string ConnectionString { get; set; }
-        bool DatabaseOnMemory { get; set; }
-
+        bool UseOnMemory { get; set; }
         bool UseSqlite { get; set; }
+        bool UseSqlServer { get; set; }        
     }
 }
