@@ -23,7 +23,7 @@ Primero es necesario heredar la interfaz IDbContext tu contexto de datos e imple
 
 
 ```csharp
-	public class BitacoraContext : DbContext, IDbContext
+public class BitacoraContext : DbContext, IDbContext
     {
         public IDataAccessConfiguration DataAccessConfiguration { get; set; }
 		
@@ -33,7 +33,7 @@ Primero es necesario heredar la interfaz IDbContext tu contexto de datos e imple
 Despues hay que sobrescribir el método OnConfiguring, esto es totalmente necesario para poder usar la Factory.
 
 ```csharp
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
 
@@ -63,7 +63,7 @@ Despues hay que sobrescribir el método OnConfiguring, esto es totalmente necesa
 Puedes omitir propiedades o incluso usar solo la cadena de conexión.
 
 ```csharp
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
 
@@ -84,7 +84,7 @@ En el proyecto AppLabs.EntityFramework.Test se demuestra el uso directo.
 La IDataAccessConfiguration expone 4 propiedades para ayudar a la factoria a generar el DbContext de manera adecuada por medio del DatabaseFactory.
 
 ```csharp
-		public string ConnectionString { get; set; }
+public string ConnectionString { get; set; }
         public bool UseOnMemory { get; set; }
         public bool UseSqlite { get; set; }
         public bool UseSqlServer { get; set; }
@@ -93,7 +93,7 @@ La IDataAccessConfiguration expone 4 propiedades para ayudar a la factoria a gen
 Ejemplo usando Sqlite
 
 ```csharp
-		[TestInitialize]
+[TestInitialize]
         public void Initialize()
         {            
             _factory = new DatabaseFactory<BitacoraContext>
@@ -108,7 +108,7 @@ Ejemplo usando Sqlite
 Ejemplo usando SqlServer (el constructor de DataAccessConfiguration establece por dafault SqlServer)
 
 ```csharp
-		[TestInitialize]
+[TestInitialize]
         public void Initialize()
         {            
             _factory = new DatabaseFactory<BitacoraContext>
@@ -150,7 +150,7 @@ Y despues inyectar las dependiencias en startup.cs
 
 ```csharp
 
-			services.AddSingleton<IDataAccessConfiguration>(dc =>
+services.AddSingleton<IDataAccessConfiguration>(dc =>
               new DataAccessConfiguration($"{Configuration["DataAccessConfiguration:ConnectionString"]}",
                   bool.Parse(Configuration["DataAccessConfiguration:UseSqlite"])));
             
