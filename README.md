@@ -28,7 +28,7 @@ Primero es necesario heredar la interfaz IDbContext tu contexto de datos e imple
         public IDataAccessConfiguration DataAccessConfiguration { get; set; }
 		
     ...
-```csharp
+```
         
 Despues hay que sobrescribir el método OnConfiguring, esto es totalmente necesario para poder usar la Factory.
 
@@ -58,7 +58,7 @@ Despues hay que sobrescribir el método OnConfiguring, esto es totalmente necesa
                 }
             }
         }
-```csharp
+```
         
 Puedes omitir propiedades o incluso usar solo la cadena de conexión.
 
@@ -73,7 +73,7 @@ Puedes omitir propiedades o incluso usar solo la cadena de conexión.
                 
             }
         }
-```csharp
+```
         
 
 El siguiente paso es añadir la configuracion (IDataAccessConfiguration).
