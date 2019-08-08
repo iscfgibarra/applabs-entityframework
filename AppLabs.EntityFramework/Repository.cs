@@ -15,6 +15,8 @@ namespace AppLabs.EntityFramework
         private readonly IDbContext _dataContext;
         private readonly DbSet<T> _dbset;
 
+        public DbSet<T> DbSet => _dbset;
+
         public Repository(IDatabaseFactory databaseFactory)
         {            
             _dataContext = databaseFactory.Create();

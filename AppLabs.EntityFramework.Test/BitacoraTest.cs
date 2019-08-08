@@ -29,9 +29,13 @@ namespace AppLabs.EntityFramework.Test
         {
             var proyectoRepo = _uow.GetRepository<Proyecto>();
 
+          //  var maxId = proyectoRepo.DbSet.DefaultIfEmpty().Max(r => r == null ? 0 : r.ProyectoId);
+
             var list = proyectoRepo.GetMany(p => p.ProyectoId == 1 || p.ProyectoId == 2).ToList();
 
             if (list.Count > 0) return;
+
+           
 
             proyectoRepo.Add(new Proyecto
                 {

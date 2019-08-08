@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AppLabs.EntityFramework.Paged;
+using Microsoft.EntityFrameworkCore;
 
 namespace AppLabs.EntityFramework.Interfaces
 {
     public interface IRepository<T>
         where T : class
     {
+        DbSet<T> DbSet { get; }
+
+        IDbContext DbContext { get; }
+
         void Add(T entity);
 
         Task<T> AddAsync(T entity);

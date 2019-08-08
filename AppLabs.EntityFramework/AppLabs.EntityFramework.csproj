@@ -10,7 +10,7 @@ Factoria (Factory), Repositorio (Repository) y Unidad de Trabajo (Unit of Work) 
     <Authors>Francisco Ibarra</Authors>
     <PackageTags>Entity Framework, Factory, Repository, Unit of Work</PackageTags>
     <PackageProjectUrl>https://github.com/iscfgibarra/applabs-entityframework</PackageProjectUrl>
-    <Version>1.0.4</Version>
+    <Version>1.0.5</Version>
   </PropertyGroup>
 
   <ItemGroup>
