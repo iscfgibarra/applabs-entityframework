@@ -19,7 +19,7 @@ namespace AppLabs.EntityFramework.Test
             //La cadena de conexion no aplica puesto que
             //estamos usando una base de datos en memoria.
             _factory = new DatabaseFactory<BitacoraContext>
-                (new DataAccessConfiguration("Data Source=E:\\bitacora.db", true));
+                (new DataAccessConfiguration("Data Source=C:\\DEV\\bitacora.db", true));
             _uow = new UnitOfWork(_factory);
             InitProyectos();
             InitEtiquetas();

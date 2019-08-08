@@ -17,7 +17,7 @@ namespace AppLabs.EntityFramework
 
         public Repository(IDatabaseFactory databaseFactory)
         {            
-            _dataContext = databaseFactory.Get();
+            _dataContext = databaseFactory.Create();
             _dbset = _dataContext.Set<T>();
         }
 

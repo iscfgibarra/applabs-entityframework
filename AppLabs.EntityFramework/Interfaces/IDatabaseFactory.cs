@@ -4,6 +4,9 @@ namespace AppLabs.EntityFramework.Interfaces
 {
     public interface IDatabaseFactory : IDisposable
     {
-        IDbContext Get();       
+        [Obsolete("Get is deprecated, please use Create instead.")]
+        IDbContext Get();
+
+        IDbContext Create();
     }
 }

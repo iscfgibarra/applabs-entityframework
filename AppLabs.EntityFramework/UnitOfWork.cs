@@ -14,7 +14,7 @@ namespace AppLabs.EntityFramework
         public UnitOfWork(IDatabaseFactory databaseFactory)
         {
             _databaseFactory = databaseFactory;
-            _dataContext = _databaseFactory.Get();
+            _dataContext = _databaseFactory.Create();
             _repositories = new Dictionary<Type, object>();
         }
 
