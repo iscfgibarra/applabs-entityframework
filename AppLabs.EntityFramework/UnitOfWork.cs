@@ -8,10 +8,12 @@ namespace AppLabs.EntityFramework
     public class UnitOfWork<TContext> : IUnitOfWork<TContext>
         where TContext : IDbContext, new()
     {        
-        private IDbContext _dataContext;       
+        private readonly IDbContext _dataContext;       
         private readonly Dictionary<Type, object> _repositories;
 
-       
+        public IDbContext DbContext => _dataContext;
+
+
 
         public UnitOfWork(IDbContextConfiguration<TContext> dbContextConfiguration)
         {
