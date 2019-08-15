@@ -17,11 +17,11 @@ namespace AppLabs.EntityFramework
 
         public DbSet<T> DbSet => _dbset;
 
-        public Repository(IDatabaseFactory databaseFactory)
-        {            
-            _dataContext = databaseFactory.Create();
-            _dbset = _dataContext.Set<T>();
-        }
+        //public Repository(IDatabaseFactory databaseFactory)
+        //{            
+        //    _dataContext = databaseFactory.Create();
+        //    _dbset = _dataContext.Set<T>();
+        //}
 
         public Repository(IDbContext dbContext)
         {

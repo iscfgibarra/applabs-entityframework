@@ -32,11 +32,11 @@ namespace AppLabs.EntityFramework.Web.Demo
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddSingleton<IDataAccessConfiguration>(dc =>
-              new DataAccessConfiguration($"{Configuration["DataAccessConfiguration:ConnectionString"]}",
-                  bool.Parse(Configuration["DataAccessConfiguration:UseSqlite"])));
+            
+            services.AddSingleton<IDbContextConfiguration<BitacoraContext>>(dc =>
+                new DbContextConfiguration<BitacoraContext>($"{Configuration["DataAccessConfiguration:ConnectionString"]}",
+                    bool.Parse(Configuration["DataAccessConfiguration:UseSqlite"])));
 
-            services.AddScoped<IDatabaseFactory, DatabaseFactory<BitacoraContext>>();
             services.AddTransient<IUnitOfWork<BitacoraContext>, UnitOfWork<BitacoraContext>>();
             services.AddTransient<IRepository<Proyecto>, Repository<Proyecto>>();
             services.AddTransient<IRepository<Etiqueta>, Repository<Etiqueta>>();

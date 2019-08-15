@@ -92,10 +92,8 @@ Ejemplo usando Sqlite
 ```csharp
 [TestInitialize]
 public void Initialize()
-{
-	_factory = new DatabaseFactory<BitacoraContext>
-		(new DataAccessConfiguration("Data Source=E:\\bitacora.db", true));
-	_uow = new UnitOfWork(_factory);
+{	
+	_uow = new UnitOfWork(new DbContextConfiguration<BitacoraContext>("Data Source=E:\\bitacora.db", true));
 	InitProyectos();
 	InitEtiquetas();
 }
@@ -107,31 +105,13 @@ Ejemplo usando SqlServer (el constructor de DataAccessConfiguration establece po
 [TestInitialize]
 public void Initialize()
 {
-	_factory = new DatabaseFactory<BitacoraContext>
-		(new DataAccessConfiguration("Server=myServerAddress;Database=myDataBase;Trusted_Connection=True;"));
-	_uow = new UnitOfWork<BitacoraContext>(_factory);
+	_uow = new UnitOfWork<BitacoraContext>(new DbContextConfiguration<BitacoraContext>("Server=myServerAddress;Database=myDataBase;Trusted_Connection=True;"));
 	InitProyectos();
 	InitEtiquetas();
 }
 ```
 
-### Configuracion Directa (usando solo Unit of Work)
 
-En el proyecto AppLabs.EntityFramework.Test se demuestra el uso directo omitiendo el Factory
-Este método es util cuando vas usa multiples base de datos en un mismo proyecto.
-
-Ejemplo usando Sqlite
-
-```csharp
-[TestInitialize]
-public void Initialize()
-{
-	//La configuracion se pasa directa a la unidad de trabajo
-	_uow = new UnitOfWork<BitacoraContext>(new DbContextConfiguration<BitacoraContext>("Data Source=C:\\DEV\\bitacora.db", true));
-	InitProyectos();
-	InitEtiquetas();
-}
-```
 
 ### Configuracion Web
 
@@ -158,12 +138,11 @@ Para poder usar adecuadamente en un proyecto de .NET CORE 2.2+ primero seria nec
 Y despues inyectar las dependiencias en startup.cs
 
 ```csharp
-services.AddSingleton<IDataAccessConfiguration>(dc =>
-              new DataAccessConfiguration($"{Configuration["DataAccessConfiguration:ConnectionString"]}",
-				bool.Parse(Configuration["DataAccessConfiguration:UseSqlite"])));
+ services.AddSingleton<IDbContextConfiguration<BitacoraContext>>(dc =>
+                new DbContextConfiguration<BitacoraContext>($"{Configuration["DataAccessConfiguration:ConnectionString"]}",
+                    bool.Parse(Configuration["DataAccessConfiguration:UseSqlite"])));
 
-services.AddScoped<IDatabaseFactory, DatabaseFactory<BitacoraContext>>();
-services.AddTransient<IUnitOfWork<BitacoraContext>, UnitOfWork>();
+services.AddTransient<IUnitOfWork<BitacoraContext>, UnitOfWork<BitacoraContext>>();
 services.AddTransient<IRepository<Proyecto>, Repository<Proyecto>>();
 services.AddTransient<IRepository<Etiqueta>, Repository<Etiqueta>>();
 services.AddTransient<IRepository<Entrada>, Repository<Entrada>>();

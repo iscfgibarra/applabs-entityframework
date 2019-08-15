@@ -8,16 +8,10 @@ namespace AppLabs.EntityFramework
     public class UnitOfWork<TContext> : IUnitOfWork<TContext>
         where TContext : IDbContext, new()
     {        
-        private IDbContext _dataContext;
-        private readonly IDatabaseFactory _databaseFactory;
+        private IDbContext _dataContext;       
         private readonly Dictionary<Type, object> _repositories;
 
-        public UnitOfWork(IDatabaseFactory databaseFactory)
-        {
-            _databaseFactory = databaseFactory;
-            _dataContext = _databaseFactory.Create();
-            _repositories = new Dictionary<Type, object>();
-        }
+       
 
         public UnitOfWork(IDbContextConfiguration<TContext> dbContextConfiguration)
         {
@@ -34,20 +28,9 @@ namespace AppLabs.EntityFramework
                 return _repositories[typeof(TEntity)] as IRepository<TEntity>;
             }
 
-
-            if (_databaseFactory != null)
-            {
-                var repository = new Repository<TEntity>(_databaseFactory);
-                _repositories.Add(typeof(TEntity), repository);
-                return repository;
-            }
-            else
-            {
-                var repository = new Repository<TEntity>(_dataContext);
-                _repositories.Add(typeof(TEntity), repository);
-                return repository;
-            }
-
+            var repository = new Repository<TEntity>(_dataContext);
+            _repositories.Add(typeof(TEntity), repository);
+            return repository;
         }
 
         public int Save()
