@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AppLabs.EntityFramework.Data;
+﻿using AppLabs.EntityFramework.Data;
 using AppLabs.EntityFramework.Data.Entities;
 using AppLabs.EntityFramework.Interfaces;
 using Microsoft.AspNetCore.Builder;
@@ -39,9 +35,9 @@ namespace AppLabs.EntityFramework.Web.Demo
             services.AddSingleton<IDataAccessConfiguration>(dc =>
               new DataAccessConfiguration($"{Configuration["DataAccessConfiguration:ConnectionString"]}",
                   bool.Parse(Configuration["DataAccessConfiguration:UseSqlite"])));
-            
+
             services.AddScoped<IDatabaseFactory, DatabaseFactory<BitacoraContext>>();
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IUnitOfWork<BitacoraContext>, UnitOfWork<BitacoraContext>>();
             services.AddTransient<IRepository<Proyecto>, Repository<Proyecto>>();
             services.AddTransient<IRepository<Etiqueta>, Repository<Etiqueta>>();
             services.AddTransient<IRepository<Entrada>, Repository<Entrada>>();

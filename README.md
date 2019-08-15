@@ -1,4 +1,5 @@
 # AppLabs EntityFramework
+
 El objetivo de está libreria es simplificar el inicio de cualquier proyecto con patrones ya conocidos.
 
 Ver el proyecto AppLabs.EntityFramework.Test para ejemplos de su uso, en el repositorio del proyecto.
@@ -19,8 +20,7 @@ Para mayor referencia verificar la [documentación de microsoft para Sqlite para
 
 ## Inicio Rápido
 
-Primero es necesario heredar la interfaz IDbContext tu contexto de datos e implementar la propiedad DataAccessConfiguration. 
-
+Primero es necesario heredar la interfaz IDbContext tu contexto de datos e implementar la propiedad DataAccessConfiguration.
 
 ```csharp
 public class BitacoraContext : DbContext, IDbContext
@@ -28,14 +28,14 @@ public class BitacoraContext : DbContext, IDbContext
 	public IDataAccessConfiguration DataAccessConfiguration { get; set; }
 	...
 ```
-        
-Despues hay que sobrescribir el método OnConfiguring, esto es totalmente necesario para poder usar la Factory.
+
+Despues hay que sobrescribir el método OnConfiguring, esto es totalmente necesario poder usar los objetos de la libreria
 
 ```csharp
 protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 {
 	base.OnConfiguring(optionsBuilder);
-	
+
 	if (!optionsBuilder.IsConfigured)
 	{
 		if (DataAccessConfiguration.UseOnMemory)
@@ -58,26 +58,25 @@ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 	}
 }
 ```
-        
+
 Puedes omitir propiedades o incluso usar solo la cadena de conexión.
 
 ```csharp
 protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 {
 	base.OnConfiguring(optionsBuilder);
-	
+
 	if (!optionsBuilder.IsConfigured)
 	{
 		optionsBuilder.UseSqlServer(DataAccessConfiguration.ConnectionString, options => options.EnableRetryOnFailure());
 	}
 }
 ```
-        
 
 El siguiente paso es añadir la configuracion (IDataAccessConfiguration).
 
 ### Configuracion Directa
-		
+
 En el proyecto AppLabs.EntityFramework.Test se demuestra el uso directo.
 La IDataAccessConfiguration expone 4 propiedades para ayudar a la factoria a generar el DbContext de manera adecuada por medio del DatabaseFactory.
 
@@ -93,13 +92,13 @@ Ejemplo usando Sqlite
 ```csharp
 [TestInitialize]
 public void Initialize()
-{            
+{
 	_factory = new DatabaseFactory<BitacoraContext>
 		(new DataAccessConfiguration("Data Source=E:\\bitacora.db", true));
 	_uow = new UnitOfWork(_factory);
 	InitProyectos();
 	InitEtiquetas();
-}		
+}
 ```
 
 Ejemplo usando SqlServer (el constructor de DataAccessConfiguration establece por default SqlServer)
@@ -107,23 +106,39 @@ Ejemplo usando SqlServer (el constructor de DataAccessConfiguration establece po
 ```csharp
 [TestInitialize]
 public void Initialize()
-{            
+{
 	_factory = new DatabaseFactory<BitacoraContext>
 		(new DataAccessConfiguration("Server=myServerAddress;Database=myDataBase;Trusted_Connection=True;"));
-	_uow = new UnitOfWork(_factory);
+	_uow = new UnitOfWork<BitacoraContext>(_factory);
 	InitProyectos();
 	InitEtiquetas();
-}		
+}
 ```
 
+### Configuracion Directa (usando solo Unit of Work)
+
+En el proyecto AppLabs.EntityFramework.Test se demuestra el uso directo omitiendo el Factory
+Este método es util cuando vas usa multiples base de datos en un mismo proyecto.
+
+Ejemplo usando Sqlite
+
+```csharp
+[TestInitialize]
+public void Initialize()
+{
+	//La configuracion se pasa directa a la unidad de trabajo
+	_uow = new UnitOfWork<BitacoraContext>(new DbContextConfiguration<BitacoraContext>("Data Source=C:\\DEV\\bitacora.db", true));
+	InitProyectos();
+	InitEtiquetas();
+}
+```
 
 ### Configuracion Web
 
-En el proyecto AppLabs.EntityFramework.Web.Demo se muestra como 
+En el proyecto AppLabs.EntityFramework.Web.Demo se muestra como
 Para poder usar adecuadamente en un proyecto de .NET CORE 2.2+ primero seria necesario agregar la sección correspondiente en el appsettings.json
 
 ```json
-
 {
   "Logging": {
     "LogLevel": {
@@ -138,8 +153,6 @@ Para poder usar adecuadamente en un proyecto de .NET CORE 2.2+ primero seria nec
     "UseSqlServer": false
   }
 }
-
-
 ```
 
 Y despues inyectar las dependiencias en startup.cs
@@ -150,17 +163,8 @@ services.AddSingleton<IDataAccessConfiguration>(dc =>
 				bool.Parse(Configuration["DataAccessConfiguration:UseSqlite"])));
 
 services.AddScoped<IDatabaseFactory, DatabaseFactory<BitacoraContext>>();
-services.AddTransient<IUnitOfWork, UnitOfWork>();
+services.AddTransient<IUnitOfWork<BitacoraContext>, UnitOfWork>();
 services.AddTransient<IRepository<Proyecto>, Repository<Proyecto>>();
 services.AddTransient<IRepository<Etiqueta>, Repository<Etiqueta>>();
 services.AddTransient<IRepository<Entrada>, Repository<Entrada>>();
 ```
-
-
-
-
-
-
-
-
-

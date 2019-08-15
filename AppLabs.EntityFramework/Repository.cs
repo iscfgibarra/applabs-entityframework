@@ -23,6 +23,13 @@ namespace AppLabs.EntityFramework
             _dbset = _dataContext.Set<T>();
         }
 
+        public Repository(IDbContext dbContext)
+        {
+            _dataContext = dbContext;
+            _dbset = _dataContext.Set<T>();
+        }
+
+
         public IDbContext DbContext => _dataContext;
 
         public virtual void Add(T entity)

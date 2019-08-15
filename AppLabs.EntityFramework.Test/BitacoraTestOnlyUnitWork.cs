@@ -1,26 +1,23 @@
-using System.Linq;
-using System.Threading.Tasks;
-using AppLabs.EntityFramework.Data;
+Ôªøusing AppLabs.EntityFramework.Data;
 using AppLabs.EntityFramework.Data.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AppLabs.EntityFramework.Test
 {
     [TestClass]
-    public class BitacoraTest
+    public class BitacoraTestOnlyUnitWork
     {
         private BitacoraContext _context;
-        private DatabaseFactory<BitacoraContext> _factory;
         private UnitOfWork<BitacoraContext> _uow;
 
         [TestInitialize]
         public void Initialize()
         {
             //La cadena de conexion no aplica puesto que
-            //estamos usando una base de datos en memoria.
-            _factory = new DatabaseFactory<BitacoraContext>
-                (new DataAccessConfiguration("Data Source=C:\\DEV\\bitacora.db", true));
-            _uow = new UnitOfWork<BitacoraContext> (_factory);
+            //estamos usando una base de datos en memoria.            
+            _uow = new UnitOfWork<BitacoraContext>(new DbContextConfiguration<BitacoraContext>("Data Source=C:\\DEV\\bitacora.db", true));
             InitProyectos();
             InitEtiquetas();
         }
@@ -29,20 +26,21 @@ namespace AppLabs.EntityFramework.Test
         {
             var proyectoRepo = _uow.GetRepository<Proyecto>();
 
-          //  var maxId = proyectoRepo.DbSet.DefaultIfEmpty().Max(r => r == null ? 0 : r.ProyectoId);
+            //  var maxId = proyectoRepo.DbSet.DefaultIfEmpty().Max(r => r == null ? 0 : r.ProyectoId);
 
             var list = proyectoRepo.GetMany(p => p.ProyectoId == 1 || p.ProyectoId == 2).ToList();
 
-            if (list.Count > 0) return;
-
-           
+            if (list.Count > 0)
+            {
+                return;
+            }
 
             proyectoRepo.Add(new Proyecto
-                {
-                    ProyectoId = 1,
-                    Nombre = "Estudiar Estadistica",
-                    Descripcion = "Terminar el curso b·sico"
-                });
+            {
+                ProyectoId = 1,
+                Nombre = "Estudiar Estadistica",
+                Descripcion = "Terminar el curso b√°sico"
+            });
 
             proyectoRepo.Add(
                 new Proyecto
@@ -59,11 +57,14 @@ namespace AppLabs.EntityFramework.Test
         {
             var etiquetaRepo = _uow.GetRepository<Etiqueta>();
 
-            var list = etiquetaRepo.GetMany(e => e.EtiquetaId == 1 
+            var list = etiquetaRepo.GetMany(e => e.EtiquetaId == 1
                                                  || e.EtiquetaId == 2
                                                  || e.EtiquetaId == 3).ToList();
 
-            if (list.Count > 0) return;
+            if (list.Count > 0)
+            {
+                return;
+            }
 
             etiquetaRepo.Add(new Etiqueta
             {
@@ -84,15 +85,15 @@ namespace AppLabs.EntityFramework.Test
                 new Etiqueta
                 {
                     EtiquetaId = 3,
-                    Nombre = "CertificaciÛn",
-                    Descripcion = "Presentar examÈn de certificaciÛn"
+                    Nombre = "Certificaci√≥n",
+                    Descripcion = "Presentar exam√©n de certificaci√≥n"
                 });
 
             _uow.Save();
         }
 
         [TestMethod]
-        public  async Task GetProyectos()
+        public async Task GetProyectos()
         {
             var proyectosRepo = _uow.GetRepository<Proyecto>();
 
@@ -156,6 +157,5 @@ namespace AppLabs.EntityFramework.Test
 
             Assert.AreEqual(0, results.ToList().Count);
         }
-
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using AppLabs.EntityFramework.Data;
 using Microsoft.AspNetCore.Mvc;
 using AppLabs.EntityFramework.Web.Demo.Models;
 using AppLabs.EntityFramework.Interfaces;
@@ -13,13 +14,13 @@ namespace AppLabs.EntityFramework.Web.Demo.Controllers
     public class HomeController : Controller
     {
 
-        private readonly IUnitOfWork _uow;
+        private readonly IUnitOfWork<BitacoraContext> _uow;
         private readonly IRepository<Proyecto> _proyectosRepository;
         private readonly IRepository<Entrada> _entradaRepository;
         private readonly IRepository<Etiqueta> _etiquetaRepository;
 
 
-        public HomeController(IUnitOfWork unitOfWork)
+        public HomeController(IUnitOfWork<BitacoraContext> unitOfWork)
         {
             _uow = unitOfWork;
             _proyectosRepository = _uow.GetRepository<Proyecto>();
